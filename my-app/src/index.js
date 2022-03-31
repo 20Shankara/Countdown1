@@ -22,6 +22,7 @@ class Board extends React.Component {
 
   render() {
     return (
+
       <div>
         <div className="board-row">
           {this.renderSquare(0)}
@@ -42,6 +43,7 @@ class Board extends React.Component {
     );
   }
 }
+
 
 class Game extends React.Component {
   constructor(props) {
@@ -88,15 +90,117 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
+    const current2 = history[history.length - 1];
+    const squaresC = current2.squares.slice();
+    let past
+    let squaresP
+    if (history.length === 1){
+      squaresP = current2.squares.slice();
+    } else {
+      past = history[history.length - 2]
+      squaresP = past.squares.slice();
+    }
+
+
+    let z = 0;
+    for (let i = 0 ; i < 9; i++){
+      if (squaresC[i] != squaresP[i]){
+      z = i;
+      }
+    }
+    let x
+    switch(z){
+      case 0:
+        x = " (1, 1)";
+        break;
+      case 1:
+        x = " (1, 2)";
+        break;
+      case 2:
+        x = " (1, 3)";
+        break;
+      case 3:
+        x = " (2, 1)";
+        break;
+      case 4:
+        x = " (2, 2)";
+        break;
+      case 5:
+        x = " (2, 3)";
+        break;
+      case 6: 
+        x = " (3, 1)";
+        break;
+      case 7: 
+        x = " (3, 2)";
+        break;
+      case 8:
+        x = " (3, 3)";
+        break;
+    }
+
+
+    
+
     const moves = history.map((step, move) => {
+
+    const current2 = step
+    const squaresC = current2.squares.slice();
+    let past
+    let squaresP
+    if (move === 0){
+      squaresP = current2.squares.slice();
+    } else {
+      past = history[move - 1]
+      squaresP = past.squares.slice();
+    }
+
+
+    let z = 0;
+    for (let i = 0 ; i < 9; i++){
+      if (squaresC[i] != squaresP[i]){
+      z = i;
+      }
+    }
+    let x
+    switch(z){
+      case 0:
+        x = " (1, 1)";
+        break;
+      case 1:
+        x = " (1, 2)";
+        break;
+      case 2:
+        x = " (1, 3)";
+        break;
+      case 3:
+        x = " (2, 1)";
+        break;
+      case 4:
+        x = " (2, 2)";
+        break;
+      case 5:
+        x = " (2, 3)";
+        break;
+      case 6: 
+        x = " (3, 1)";
+        break;
+      case 7: 
+        x = " (3, 2)";
+        break;
+      case 8:
+        x = " (3, 3)";
+        break;
+    }
+
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + x:
         'Go to game start';
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
-      );
+      ); 
     });
 
     let status;
@@ -115,7 +219,8 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>{status}</div>
+          <div >
+            {status}</div>
           <ol>{moves}</ol>
         </div>
       </div>
@@ -141,6 +246,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+
       return squares[a];
     }
   }
